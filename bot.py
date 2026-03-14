@@ -1,11 +1,14 @@
 
 import asyncio                    # Asinxron ishlash uchun
 import logging
+import os
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher  # Bot va Dispatcher klasslari
 from aiogram.types import Message    # Xabar tipi
 from aiogram.filters import Command  # Komanda filtri
 
-TOKEN = "8635271477:AAHE0AokBJdgvMplyxbsKAb_vv0sx4MDoMw"                     # Bot tokeni
+load_dotenv()
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")                    # Bot tokeni
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TOKEN)                                  # Bot obyekti yaratish
@@ -13,7 +16,7 @@ dp = Dispatcher()                                       # Dispatcher obyekti
 
 @dp.message(Command("start"))                           # Agar /start kelsa
 async def start(message: Message):                      # Bu funksiya ishlasin
-    await message.answer("Salom! Bot ishga tushdi!")    # Javob qaytarsin
+    await message.answer("Salom! ")    # Javob qaytarsin
 
 @dp.message(Command("help"))
 async def start(message: Message):
