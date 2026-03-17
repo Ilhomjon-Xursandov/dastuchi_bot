@@ -1,11 +1,10 @@
 
-import asyncio                       # Asinxron ishlash uchun
-import logging
-import os
+import asyncio, logging, os                    # Asinxron ishlash uchun
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, types              # Bot va Dispatcher klasslari
 from aiogram.types import Message                       # Xabar tipi
-from aiogram.filters import Command                     # Komanda filtri
+from aiogram.filters import Command
+from user_info import get_user_info
 
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")                 # Bot tokeni
@@ -16,24 +15,19 @@ dp = Dispatcher()                                       # Dispatcher obyekti
 
 @dp.message(Command("start"))                          
 async def start(message: Message):                      
-    await message.answer(f"Salom {message.from_user.full_name}!")   
+    await message.answer(f"Salom {message.from_user.full_name}!😍")
 
 @dp.message(Command("help"))
 async def help(message: Message):
     await message.answer("Bot hozircha ishlab chiqilmoqda kamchiliklar uchun usur so'raymiz!")    
 
-#oddiy javob qaytarish 
-@dp.message(Command("answer"))
-async def cmd_answer(message: types.Message):
-    await message.answer("Bu shunchaki javob")
-
 #jaob sifatida javob qaytarish
-@dp.message(Command('reply'))
-async def cmd_reply(message: types.Message):
-    await message.reply("Bu javob javob bilan")        
+@dp.message(Command('info'))
+async def cmd_reply(message: types.Message, bot: Bot):
+    await get_user_info(message, bot)
 
 async def main():                     # Asosiy funksiya
-    print("Bot ishga tushdi...")      # Konsolga chiqarish
+    print("Bot ishga tushdi...")
     await dp.start_polling(bot)       # Botni ishga tushirish
 
 if __name__ == "__main__":            # Agar fayl to'g'ridan-to'g'ri ishga tushirilsa
