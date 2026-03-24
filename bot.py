@@ -1,10 +1,12 @@
 
 import asyncio, logging, os                    # Asinxron ishlash uchun
 from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher, types              # Bot va Dispatcher klasslari
+from aiogram import Bot, Dispatcher, types, Router  # Bot va Dispatcher klasslari
 from aiogram.types import Message                       # Xabar tipi
 from aiogram.filters import Command
 from user_info import get_user_info
+from handlars.register import router
+# from aiogram import Router
 
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")                 # Bot tokeni
@@ -12,10 +14,11 @@ TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")                 # Bot tokeni
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TOKEN)                                  # Bot obyekti yaratish
 dp = Dispatcher()                                       # Dispatcher obyekti
+# router = Router()
 
-@dp.message(Command("start"))                          
-async def start(message: Message):                      
-    await message.answer(f"Salom {message.from_user.full_name}!😍")
+# @dp.message(Command("start"))
+# async def start(message: Message):
+#     await message.answer(f"Salom {message.from_user.full_name}!😍")
 
 @dp.message(Command("help"))
 async def help(message: Message):
@@ -28,6 +31,7 @@ async def cmd_reply(message: types.Message, bot: Bot):
 
 async def main():                     # Asosiy funksiya
     print("Bot ishga tushdi...")
+    dp.include_router(router)
     await dp.start_polling(bot)       # Botni ishga tushirish
 
 if __name__ == "__main__":            # Agar fayl to'g'ridan-to'g'ri ishga tushirilsa
